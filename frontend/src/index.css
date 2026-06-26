@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+:root {
+  --color-brand-primary: #3b82f6;
+  --font-display: "Inter", sans-serif;
+}
