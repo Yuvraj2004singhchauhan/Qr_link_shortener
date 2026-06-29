@@ -20,10 +20,12 @@ from django.conf.urls.static import static
 
 from django.contrib import admin
 from django.urls import path,include
+from links.views import RedirectShortURLView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("api/", include("links.urls")),
+    path("<str:short_code>/", RedirectShortURLView.as_view()),
 ]
 
 if settings.DEBUG:

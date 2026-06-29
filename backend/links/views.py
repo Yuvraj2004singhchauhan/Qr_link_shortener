@@ -13,6 +13,8 @@ from .models import ShortURL
 from .serializers import ShortURLSerializer
 from .utils import generate_short_code
 
+from django.shortcuts import get_object_or_404, redirect
+
 class CreateShortURLView(APIView):
     permission_classes = [AllowAny]
     def post(self, request):
@@ -56,3 +58,15 @@ class CreateShortURLView(APIView):
             serializer.errors,
             status=status.HTTP_400_BAD_REQUEST
         )
+    
+class RedirectShortURLView(APIView):
+    permission_classes = [AllowAny]
+    
+    def get(self, request, short_code):
+
+        short_url = get_object_or_404(
+            ShortURL,
+            short_code=short_code
+        )
+
+        return redirect(short_url.long_url)
