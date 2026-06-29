@@ -4,6 +4,11 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 
+import qrcode
+from io import BytesIO
+
+from django.core.files import File
+
 from .models import ShortURL
 from .serializers import ShortURLSerializer
 from .utils import generate_short_code
@@ -21,6 +26,23 @@ class CreateShortURLView(APIView):
             short_url = ShortURL.objects.create(
                 long_url=serializer.validated_data["long_url"],
                 short_code=short_code,
+            )
+            base_url = request.build_absolute_uri("/")[:-1]
+
+            complete_short_url = f"{base_url}/{short_code}"
+
+            qr = qrcode.make(complete_short_url)
+
+            buffer = BytesIO()
+
+            qr.save(buffer, format="PNG")
+
+            filename = f"{short_code}.png"
+
+            short_url.qr_code.save(
+                filename,
+                File(buffer),
+                save=True
             )
 
             response_serializer = ShortURLSerializer(short_url)
