@@ -13,7 +13,7 @@ from rest_framework.permissions import AllowAny
 
 class AnalyticsView(APIView):
 
-    permission_classes = [AllowAny]
+    #permission_classes = [AllowAny]
     def get(self, request, short_code):
 
         short_url = ShortURL.objects.get(
