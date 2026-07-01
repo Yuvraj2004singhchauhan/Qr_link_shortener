@@ -14,6 +14,9 @@ from .serializers import ShortURLSerializer
 from .utils import generate_short_code
 
 from django.shortcuts import get_object_or_404, redirect
+from analytics.models import ClickAnalytics
+
+from user_agents import parse
 
 class CreateShortURLView(APIView):
     permission_classes = [AllowAny]
@@ -67,6 +70,36 @@ class RedirectShortURLView(APIView):
         short_url = get_object_or_404(
             ShortURL,
             short_code=short_code
+        )
+
+        ip_address = request.META.get("REMOTE_ADDR")
+
+        user_agent = request.META.get("HTTP_USER_AGENT", "")
+
+        referrer = request.META.get("HTTP_REFERER", "")
+        
+        user_agent_data = parse(user_agent)
+
+        browser = user_agent_data.browser.family
+
+        operating_system = user_agent_data.os.family
+
+        device = (
+            "Mobile"
+            if user_agent_data.is_mobile
+            else "Tablet"
+            if user_agent_data.is_tablet
+            else "PC"
+        )
+
+        ClickAnalytics.objects.create(
+            short_url=short_url,
+            ip_address=ip_address,
+            user_agent=user_agent,
+            browser=browser,
+            operating_system=operating_system,
+            device=device,
+            referrer=referrer if referrer else None,
         )
 
         return redirect(short_url.long_url)

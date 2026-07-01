@@ -26,6 +26,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("api/", include("links.urls")),
     path("<str:short_code>/", RedirectShortURLView.as_view()),
+    path("api/analytics/", include("analytics.urls")),
 ]
 
 if settings.DEBUG:
