@@ -25,7 +25,24 @@ class CreateShortURLView(APIView):
 
         if serializer.is_valid():
 
-            short_code = generate_short_code()
+            if custom_alias:
+
+                if ShortURL.objects.filter(
+                    short_code=custom_alias
+                ).exists():
+
+                    return Response(
+                        {
+                            "error": "Alias already exists."
+                        },
+                        status=400
+                    )
+
+                short_code = custom_alias
+
+            else:
+
+                short_code = generate_short_code()            
 
             short_url = ShortURL.objects.create(
                 user=request.user,

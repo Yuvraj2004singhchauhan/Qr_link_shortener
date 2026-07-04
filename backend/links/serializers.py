@@ -2,6 +2,11 @@ from rest_framework import serializers
 from .models import ShortURL
 
 class ShortURLSerializer(serializers.ModelSerializer):
+    custom_alias = serializers.CharField(
+        required=False,
+        allow_blank=True,
+        write_only=True
+    )
     class Meta:
         model = ShortURL
         fields = "__all__"
