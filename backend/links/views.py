@@ -10,7 +10,7 @@ from io import BytesIO
 from django.core.files import File
 
 from .models import ShortURL
-from .serializers import ShortURLSerializer
+from .serializers import ShortURLSerializer,MyLinksSerializer
 from .utils import generate_short_code
 
 from django.shortcuts import get_object_or_404, redirect
@@ -19,7 +19,6 @@ from analytics.models import ClickAnalytics
 from user_agents import parse
 
 class CreateShortURLView(APIView):
-    permission_classes = [AllowAny]
     def post(self, request):
 
         serializer = ShortURLSerializer(data=request.data)
@@ -29,6 +28,7 @@ class CreateShortURLView(APIView):
             short_code = generate_short_code()
 
             short_url = ShortURL.objects.create(
+                user=request.user,
                 long_url=serializer.validated_data["long_url"],
                 short_code=short_code,
             )
@@ -103,3 +103,21 @@ class RedirectShortURLView(APIView):
         )
 
         return redirect(short_url.long_url)
+
+class MyLinksView(APIView):
+
+    def get(self, request):
+
+        links = (
+            ShortURL.objects
+            .filter(user=request.user)
+            .order_by("-created_at")
+        )
+
+        serializer = MyLinksSerializer(
+            links,
+            many=True,
+            context={"request": request}
+        )
+
+        return Response(serializer.data)

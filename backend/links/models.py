@@ -1,6 +1,8 @@
 from django.db import models
+from users.models import User
 
 class ShortURL(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE,related_name="links")
     long_url = models.URLField()
     short_code = models.CharField(max_length=10, unique=True)
     qr_code = models.ImageField(upload_to="qr_codes/")
