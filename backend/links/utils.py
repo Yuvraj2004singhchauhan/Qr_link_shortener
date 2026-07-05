@@ -4,6 +4,7 @@ import string
 from .models import ShortURL
 
 def generate_short_code(length=6):
+    
     characters = string.ascii_letters + string.digits
 
     while True:

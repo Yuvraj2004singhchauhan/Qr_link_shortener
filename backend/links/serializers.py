@@ -39,3 +39,12 @@ class MyLinksSerializer(serializers.ModelSerializer):
             return request.build_absolute_uri(f"/{obj.short_code}")
 
         return obj.short_code
+
+class UpdateLinkSerializer(serializers.Serializer):
+
+    long_url = serializers.URLField()
+
+    custom_alias = serializers.CharField(
+        required=False,
+        allow_blank=True
+    )

@@ -10,8 +10,9 @@ from io import BytesIO
 from django.core.files import File
 
 from .models import ShortURL
-from .serializers import ShortURLSerializer,MyLinksSerializer
+from .serializers import ShortURLSerializer,MyLinksSerializer,UpdateLinkSerializer
 from .utils import generate_short_code
+from .services import generate_qr_code,update_short_url
 
 from django.shortcuts import get_object_or_404, redirect
 from analytics.models import ClickAnalytics
@@ -22,6 +23,7 @@ class CreateShortURLView(APIView):
     def post(self, request):
 
         serializer = ShortURLSerializer(data=request.data)
+        custom_alias = request.data.get("custom_alias") 
 
         if serializer.is_valid():
 
@@ -53,18 +55,9 @@ class CreateShortURLView(APIView):
 
             complete_short_url = f"{base_url}/{short_code}"
 
-            qr = qrcode.make(complete_short_url)
-
-            buffer = BytesIO()
-
-            qr.save(buffer, format="PNG")
-
-            filename = f"{short_code}.png"
-
-            short_url.qr_code.save(
-                filename,
-                File(buffer),
-                save=True
+            generate_qr_code(
+                short_url,
+                complete_short_url
             )
 
             response_serializer = ShortURLSerializer(short_url)
@@ -138,3 +131,58 @@ class MyLinksView(APIView):
         )
 
         return Response(serializer.data)
+
+class DeleteLinkView(APIView):
+
+    def delete(self, request, id):
+
+        link = get_object_or_404(
+            ShortURL,
+            id=id,
+            user=request.user
+        )
+
+        link.delete()
+
+        return Response(
+            {
+                "message": "Link deleted successfully."
+            },
+            status=status.HTTP_200_OK
+        )
+
+class UpdateLinkView(APIView):
+
+    def put(self, request, id):
+
+        serializer = UpdateLinkSerializer(
+            data=request.data
+        )
+
+        serializer.is_valid(raise_exception=True)
+
+        short_url = get_object_or_404(
+            ShortURL,
+            id=id,
+            user=request.user
+        )
+        try:
+
+            updated_link = update_short_url(
+                short_url=short_url,
+                request=request,
+                **serializer.validated_data
+            )
+
+        except ValueError as e:
+
+            return Response(
+                {
+                    "error": str(e)
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        return Response(
+            ShortURLSerializer(updated_link).data
+        )
