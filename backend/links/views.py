@@ -3,6 +3,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny
+from drf_spectacular.utils import extend_schema
+
 
 import qrcode
 from io import BytesIO
@@ -13,6 +15,7 @@ from .models import ShortURL
 from .serializers import ShortURLSerializer,MyLinksSerializer,UpdateLinkSerializer
 from .utils import generate_short_code
 from .services import generate_qr_code,update_short_url
+from .pagination import LinkPagination
 
 from django.shortcuts import get_object_or_404, redirect
 from analytics.models import ClickAnalytics
@@ -123,14 +126,32 @@ class MyLinksView(APIView):
             .filter(user=request.user)
             .order_by("-created_at")
         )
+        search = request.query_params.get("search")
 
-        serializer = MyLinksSerializer(
+        if search:
+
+            links = links.filter(
+                long_url__icontains=search
+            )
+
+        paginator = LinkPagination()
+
+        page = paginator.paginate_queryset(
             links,
-            many=True,
-            context={"request": request}
+            request
         )
 
-        return Response(serializer.data)
+        serializer = MyLinksSerializer(
+            page,
+            many=True,
+            context={
+                "request":request
+            }
+        )
+
+        return paginator.get_paginated_response(
+            serializer.data
+        )
 
 class DeleteLinkView(APIView):
 
@@ -152,6 +173,10 @@ class DeleteLinkView(APIView):
         )
 
 class UpdateLinkView(APIView):
+    @extend_schema(
+        request=UpdateLinkSerializer,
+        responses=ShortURLSerializer,
+    )
 
     def put(self, request, id):
 
