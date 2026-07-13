@@ -19,6 +19,8 @@ from .pagination import LinkPagination
 
 from django.shortcuts import get_object_or_404, redirect
 from analytics.models import ClickAnalytics
+from rest_framework.permissions import IsAuthenticated
+
 
 from user_agents import parse
 
@@ -63,8 +65,10 @@ class CreateShortURLView(APIView):
                 complete_short_url
             )
 
-            response_serializer = ShortURLSerializer(short_url)
-
+            response_serializer = ShortURLSerializer(
+                short_url,
+                context={"request": request}
+            )
             return Response(
                 response_serializer.data,
                 status=status.HTTP_201_CREATED
@@ -154,7 +158,7 @@ class MyLinksView(APIView):
         )
 
 class DeleteLinkView(APIView):
-
+    permission_classes = [IsAuthenticated]
     def delete(self, request, id):
 
         link = get_object_or_404(
