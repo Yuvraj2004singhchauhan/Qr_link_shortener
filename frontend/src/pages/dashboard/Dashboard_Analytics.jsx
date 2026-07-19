@@ -1,41 +1,46 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 
 import {
     BarChart3,
+    Link2,
     MousePointerClick,
     Users,
-    Link2,
+    Trophy,
 } from "lucide-react";
 
-import { getAnalytics } from "../../services/analyticsService";
+import { getDashboardAnalytics } from "../../services/dashboardService";
+
+import Spinner from "../../components/ui/Spinner";
 
 import AnalyticsCard from "../../components/dashboard/AnalyticsCard";
+
 import BrowserPieChart from "../../components/charts/BrowserPieChart";
+
 import DeviceBarChart from "../../components/charts/DeviceBarChart";
+
+import ClickTrendChart from "../../components/charts/ClickTrendChart";
+
+import TopLinksTable from "../../components/dashboard/TopLinksTable";
+
 import RecentClicksTable from "../../components/dashboard/RecentClicksTable";
-import Spinner from "../../components/ui/Spinner";
 
 function Analytics() {
 
-    const { shortCode } = useParams();
-
     const [analytics, setAnalytics] = useState(null);
+
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
 
         fetchAnalytics();
 
-    }, [shortCode]);
+    }, []);
 
     const fetchAnalytics = async () => {
 
         try {
 
-            setLoading(true);
-
-            const data = await getAnalytics(shortCode);
+            const data = await getDashboardAnalytics();
 
             setAnalytics(data);
 
@@ -61,35 +66,6 @@ function Analytics() {
 
     }
 
-    if (!analytics) {
-
-        return (
-
-            <div className="flex flex-col items-center justify-center py-24 text-center">
-
-                <BarChart3
-                    size={70}
-                    className="text-slate-500 mb-5"
-                />
-
-                <h2 className="text-2xl font-bold text-white">
-
-                    No Analytics Found
-
-                </h2>
-
-                <p className="mt-3 text-slate-400 max-w-md">
-
-                    We couldn't find analytics for this shortened link.
-
-                </p>
-
-            </div>
-
-        );
-
-    }
-
     return (
 
         <div className="space-y-10">
@@ -110,64 +86,61 @@ function Analytics() {
 
                     <h1 className="text-4xl font-bold text-white">
 
-                        Link Analytics
+                        Overall Analytics
 
                     </h1>
 
-                    <p className="mt-3 text-slate-400 max-w-2xl">
+                    <p className="mt-3 max-w-2xl text-slate-400">
 
-                        Monitor clicks, visitors, browsers, devices, and user activity
-                        for your shortened link in real time.
-
-                    </p>
-
-                </div>
-
-                <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl px-6 py-5">
-
-                    <p className="text-xs uppercase tracking-widest text-slate-400">
-
-                        Short Code
+                        Get a complete overview of all your shortened links,
+                        clicks, visitors, devices and browser statistics.
 
                     </p>
-
-                    <h2 className="mt-2 text-2xl font-bold text-cyan-400">
-
-                        {analytics.short_code}
-
-                    </h2>
 
                 </div>
 
             </div>
 
-            {/* Stats */}
+            {/* Summary Cards */}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+
+                <AnalyticsCard
+                    title="Total Links"
+                    value={analytics.total_links}
+                    icon={Link2}
+                />
 
                 <AnalyticsCard
                     title="Total Clicks"
                     value={analytics.total_clicks}
                     icon={MousePointerClick}
+                    color="from-cyan-500 via-sky-500 to-indigo-600"
                 />
 
                 <AnalyticsCard
-                    title="Unique Visitors"
+                    title="Visitors"
                     value={analytics.unique_visitors}
                     icon={Users}
                     color="from-emerald-500 via-green-500 to-teal-500"
                 />
 
                 <AnalyticsCard
-                    title="Short Code"
-                    value={analytics.short_code}
-                    icon={Link2}
-                    color="from-cyan-500 via-sky-500 to-indigo-600"
+                    title="Top Link"
+                    value={analytics.top_links?.[0]?.short_code || "-"}
+                    icon={Trophy}
+                    color="from-pink-500 via-rose-500 to-red-500"
                 />
 
             </div>
 
-            {/* Charts */}
+            {/* Trend Chart */}
+
+            <ClickTrendChart
+                data={analytics.click_trend}
+            />
+
+            {/* Browser & Device */}
 
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
 
@@ -181,10 +154,16 @@ function Analytics() {
 
             </div>
 
-            {/* Recent Clicks */}
+            {/* Top Links */}
+
+            <TopLinksTable
+                links={analytics.top_links}
+            />
+
+            {/* Recent Activity */}
 
             <RecentClicksTable
-                clicks={analytics.recent_clicks}
+                clicks={analytics.recent_activity}
             />
 
         </div>

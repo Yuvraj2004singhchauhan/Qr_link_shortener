@@ -1,9 +1,9 @@
-import { Activity } from "lucide-react";
+import { TrendingUp } from "lucide-react";
 
-function DashboardCard({
+function AnalyticsCard({
     title,
     value,
-    icon: Icon = Activity,
+    icon: Icon = TrendingUp,
     color = "from-violet-600 via-indigo-600 to-cyan-500",
 }) {
 
@@ -32,8 +32,8 @@ function DashboardCard({
             <div
                 className={`
                     absolute
-                    -top-10
                     -right-10
+                    -top-10
                     h-32
                     w-32
                     rounded-full
@@ -44,11 +44,13 @@ function DashboardCard({
                 `}
             />
 
+            {/* Content */}
+
             <div className="relative z-10 flex items-start justify-between">
 
                 <div>
 
-                    <p className="text-sm uppercase tracking-wider text-slate-400 font-medium">
+                    <p className="text-sm font-medium uppercase tracking-wider text-slate-400">
 
                         {title}
 
@@ -64,12 +66,12 @@ function DashboardCard({
 
                 <div
                     className={`
+                        flex
                         h-14
                         w-14
-                        rounded-2xl
-                        flex
                         items-center
                         justify-center
+                        rounded-2xl
                         bg-gradient-to-r
                         ${color}
                         text-white
@@ -77,9 +79,19 @@ function DashboardCard({
                     `}
                 >
 
-                    <Icon size={24} />
+                    <Icon size={26} />
 
                 </div>
+
+            </div>
+
+            {/* Bottom Label */}
+
+            <div className="relative z-10 mt-6 flex items-center gap-2 text-sm text-emerald-400">
+
+                <TrendingUp size={16} />
+
+                <span>Live Analytics</span>
 
             </div>
 
@@ -89,4 +101,4 @@ function DashboardCard({
 
 }
 
-export default DashboardCard;
+export default AnalyticsCard;

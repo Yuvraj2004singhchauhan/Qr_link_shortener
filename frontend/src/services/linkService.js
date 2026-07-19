@@ -34,7 +34,7 @@ export const deleteLink = async (id) => {
 export const updateLink = async (id, data) => {
 
     const response = await api.put(
-        `links/${id}/`,
+        `update/${id}/`,
         data
     );
 

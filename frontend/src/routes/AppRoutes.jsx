@@ -9,6 +9,7 @@ import Analytics from "../pages/dashboard/Analytics";
 import NotFound from "../pages/NotFound";
 import ProtectedRoute from "../components/common/ProtectedRoute";
 import DashboardLayout from "../layouts/DashboardLayout";
+import Dashboard_Analytics from "../pages/dashboard/Dashboard_Analytics";
 
 function AppRoutes() {
   return (
@@ -42,6 +43,11 @@ function AppRoutes() {
         <Route
           path="/analytics/:shortCode"
           element={<Analytics />}
+        />
+
+        <Route
+          path="/dashboard-analytics"
+          element={<Dashboard_Analytics/>}
         />
 
       </Route>

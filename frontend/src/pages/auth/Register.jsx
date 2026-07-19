@@ -1,163 +1,257 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { registerUser } from "../../services/authService"; 
+import { Sparkles, ArrowRight, QrCode } from "lucide-react";
 
-
+import { registerUser } from "../../services/authService";
 
 function Register() {
-  const navigate = useNavigate();
 
-const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    first_name: "",
-    last_name: "",
-    password: "",
-    password2: "",
-});
+    const navigate = useNavigate();
 
-const handleChange = (e) => {
-    setFormData({
-        ...formData,
-        [e.target.name]: e.target.value,
+    const [formData, setFormData] = useState({
+        username: "",
+        email: "",
+        first_name: "",
+        last_name: "",
+        password: "",
+        password2: "",
     });
-};
 
-  const handleSubmit = async(e)=>{
+    const handleChange = (e) => {
 
-    e.preventDefault();
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value,
+        });
 
-    try{
+    };
 
-        await registerUser(formData);
+    const handleSubmit = async (e) => {
 
-        navigate("/");
+        e.preventDefault();
 
-    }
+        try {
 
-    catch(error){
-    console.log(error.response);
-  }
+            await registerUser(formData);
 
-}
-  return (
-    <div className="min-h-screen flex">
+            navigate("/");
 
-      {/* Left Section */}
+        }
 
-      <div className="hidden lg:flex w-1/2 bg-blue-600 text-white items-center justify-center">
+        catch (error) {
 
-        <div className="max-w-md">
+            console.log(error.response);
 
-          <h1 className="text-5xl font-bold mb-6">
-            QR Link Shortener
-          </h1>
+        }
 
-          <p className="text-xl leading-8">
-            Join today and manage all your shortened links
-            from one powerful dashboard.
-          </p>
+    };
+
+    return (
+
+        <div className="min-h-screen flex bg-slate-950 overflow-hidden">
+
+            {/* Background Blobs */}
+
+            <div className="absolute top-16 left-16 w-72 h-72 rounded-full bg-violet-600/30 blur-[120px] animate-pulse" />
+
+            <div className="absolute bottom-10 right-10 w-80 h-80 rounded-full bg-cyan-500/20 blur-[120px] animate-pulse" />
+
+            {/* Left Side */}
+
+            <div className="hidden lg:flex w-1/2 items-center justify-center px-16 relative">
+
+                <div className="relative z-10 max-w-lg">
+
+                    <div className="flex items-center gap-4 mb-8">
+
+                    <div className="bg-white/10 backdrop-blur-xl p-3 rounded-2xl">
+
+                            <img
+                                src="/logo.png"
+                                alt="Trimm Logo"
+                                className="w-12 h-12 object-contain"
+                            />
+
+                        </div>
+
+                        <h1 className="text-6xl font-black text-white tracking-tight">
+
+                            Trimm
+
+                        </h1>
+
+                    </div>
+
+                    <h2 className="text-4xl font-bold text-white leading-tight">
+
+                        Join Trimm.
+                        <br />
+                        Shorten smarter.
+                        <br />
+                        Share faster.
+
+                    </h2>
+
+                    <p className="text-slate-300 mt-8 text-lg leading-8">
+
+                        Create your free account and start managing
+                        branded short links with analytics and QR codes.
+
+                    </p>
+
+                    <div className="mt-12 bg-white/10 backdrop-blur-xl rounded-3xl border border-white/10 p-8">
+
+                        <div className="space-y-5">
+
+                            <div className="flex items-center gap-4 text-white">
+
+                                <Sparkles className="text-cyan-300" />
+
+                                Unlimited Link Management
+
+                            </div>
+
+                            <div className="flex items-center gap-4 text-white">
+
+                                <Sparkles className="text-cyan-300" />
+
+                                QR Code Generation
+
+                            </div>
+
+                            <div className="flex items-center gap-4 text-white">
+
+                                <Sparkles className="text-cyan-300" />
+
+                                Real-Time Analytics
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {/* Right Side */}
+
+            <div className="flex-1 flex justify-center items-center px-6 py-10">
+
+                <div className="w-full max-w-lg bg-white/80 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white p-8 md:p-10">
+
+                    <h2 className="text-4xl font-bold text-center text-slate-800">
+
+                        Create Account
+
+                    </h2>
+
+                    <p className="text-center text-slate-500 mt-3">
+
+                        Start your journey with Trimm
+
+                    </p>
+
+                    <form
+                        onSubmit={handleSubmit}
+                        className="space-y-5 mt-8"
+                    >
+
+                        <input
+                            type="text"
+                            placeholder="Username"
+                            name="username"
+                            value={formData.username}
+                            onChange={handleChange}
+                            className="w-full rounded-xl border border-slate-300 p-4 focus:ring-4 focus:ring-violet-200 focus:border-violet-500 outline-none transition-all"
+                        />
+
+                        <input
+                            type="email"
+                            placeholder="Email Address"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            className="w-full rounded-xl border border-slate-300 p-4 focus:ring-4 focus:ring-violet-200 focus:border-violet-500 outline-none transition-all"
+                        />
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+                            <input
+                                type="text"
+                                placeholder="First Name"
+                                name="first_name"
+                                value={formData.first_name}
+                                onChange={handleChange}
+                                className="rounded-xl border border-slate-300 p-4 focus:ring-4 focus:ring-violet-200 focus:border-violet-500 outline-none transition-all"
+                            />
+
+                            <input
+                                type="text"
+                                placeholder="Last Name"
+                                name="last_name"
+                                value={formData.last_name}
+                                onChange={handleChange}
+                                className="rounded-xl border border-slate-300 p-4 focus:ring-4 focus:ring-violet-200 focus:border-violet-500 outline-none transition-all"
+                            />
+
+                        </div>
+
+                        <input
+                            type="password"
+                            placeholder="Password"
+                            name="password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            className="w-full rounded-xl border border-slate-300 p-4 focus:ring-4 focus:ring-violet-200 focus:border-violet-500 outline-none transition-all"
+                        />
+
+                        <input
+                            type="password"
+                            placeholder="Confirm Password"
+                            name="password2"
+                            value={formData.password2}
+                            onChange={handleChange}
+                            className="w-full rounded-xl border border-slate-300 p-4 focus:ring-4 focus:ring-violet-200 focus:border-violet-500 outline-none transition-all"
+                        />
+
+                        <button
+                            type="submit"
+                            className="w-full flex items-center justify-center gap-3 rounded-xl bg-gradient-to-r from-violet-600 via-indigo-600 to-cyan-500 text-white py-4 font-semibold shadow-lg hover:scale-[1.02] active:scale-95 transition-all duration-300"
+                        >
+
+                            Create Account
+
+                            <ArrowRight size={20} />
+
+                        </button>
+
+                    </form>
+
+                    <p className="text-center text-slate-600 mt-8">
+
+                        Already have an account?{" "}
+
+                        <Link
+                            to="/"
+                            className="font-semibold text-violet-600 hover:text-violet-700 transition"
+                        >
+
+                            Login
+
+                        </Link>
+
+                    </p>
+
+                </div>
+
+            </div>
 
         </div>
 
-      </div>
+    );
 
-      {/* Right Section */}
-
-      <div className="flex-1 flex justify-center items-center bg-gray-100">
-
-        <div className="bg-white p-10 rounded-2xl shadow-xl w-[450px]">
-
-          <h2 className="text-3xl font-bold text-center mb-8">
-
-            Create Account
-
-          </h2>
-
-          <form onSubmit={handleSubmit} className="space-y-4">
-
-            <input
-              type="text"
-              placeholder="Username"
-              name="username"
-              value={formData.username}
-              onChange={handleChange}
-              className="w-full border rounded-lg p-3"
-            />
-
-            <input
-              type="email"
-              placeholder="Email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className="w-full border rounded-lg p-3"
-            />
-
-            <input
-              type="text"
-              placeholder="First Name"
-              name="first_name"
-              value={formData.first_name}
-              onChange={handleChange}
-              className="w-full border rounded-lg p-3"
-            />
-
-            <input
-              type="text"
-              placeholder="Last Name"
-              name="last_name"
-              value={formData.last_name}
-              onChange={handleChange}
-              className="w-full border rounded-lg p-3"
-            />
-
-            <input
-              type="password"
-              placeholder="Password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              className="w-full border rounded-lg p-3"
-            />
-
-            <input
-              type="password"
-              placeholder="Confirm Password"
-              name="password2"
-              value={formData.password2}
-              onChange={handleChange}
-              className="w-full border rounded-lg p-3"
-            />
-
-            <button
-              type="submit"
-              className="w-full bg-blue-600 text-white rounded-lg p-3 hover:bg-blue-700 transition"
-            >
-              Register
-            </button>
-
-          </form>
-
-          <p className="text-center mt-6">
-
-            Already have an account?
-
-            <Link
-              to="/"
-              className="text-blue-600 ml-2 font-semibold"
-            >
-              Login
-            </Link>
-
-          </p>
-
-        </div>
-
-      </div>
-
-    </div>
-  );
 }
 
 export default Register;
