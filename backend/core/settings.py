@@ -51,10 +51,16 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173", # Default Vite + React port
+ALLOWED_HOSTS = [
+    "qrlinkshortener-production.up.railway.app",
+    "127.0.0.1",
+    "localhost",
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://qrlinkshortener-production.up.railway.app",
+    "http://localhost:5173",
+]
 ROOT_URLCONF = 'core.urls'
 
 REST_FRAMEWORK = {
