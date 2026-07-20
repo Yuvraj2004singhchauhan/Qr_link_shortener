@@ -17,7 +17,6 @@ load_dotenv(BASE_DIR / ".env")
 SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False") == "True"
-ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -58,10 +57,12 @@ ALLOWED_HOSTS = [
 ]
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    "https://qr-link-shortener-six.vercel.app",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://qrlinkshortener-production.up.railway.app",
+    "https://qr-link-shortener-six.vercel.app",
     "http://localhost:5173",
 ]
 ROOT_URLCONF = 'core.urls'
