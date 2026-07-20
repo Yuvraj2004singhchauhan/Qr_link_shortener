@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Sparkles, ArrowRight, QrCode } from "lucide-react";
+import { toast } from "react-toastify";
 
 import { loginUser } from "../../services/authService";
 import { useAuth } from "../../context/AuthContext";
@@ -39,9 +40,15 @@ function Login() {
         }
 
         catch (error) {
+            console.log(error.response?.data);
 
-            console.log(error);
+            const message =
+                error.response?.data?.message ||
+                error.response?.data?.error ||
+                error.response?.data?.detail ||
+                "Login failed";
 
+            toast.error(message);
         }
 
     };
@@ -64,21 +71,21 @@ function Login() {
 
                     <div className="flex items-center gap-4 mb-8">
 
-                    <div className="bg-white/10 backdrop-blur-xl p-3 rounded-2xl">
+                        <div className="bg-white/10 backdrop-blur-xl p-3 rounded-2xl">
 
-                        <img
-                            src="/logo.png"
-                            alt="Trimm Logo"
-                            className="w-12 h-12 object-contain"
-                        />
+                            <img
+                                src="/logo.png"
+                                alt="Trimm Logo"
+                                className="w-12 h-12 object-contain"
+                            />
 
-                    </div>
+                        </div>
 
-                    <h1 className="text-6xl font-black text-white tracking-tight">
+                        <h1 className="text-6xl font-black text-white tracking-tight">
 
-                        Trimm
+                            Trimm
 
-                    </h1>
+                        </h1>
 
                     </div>
 

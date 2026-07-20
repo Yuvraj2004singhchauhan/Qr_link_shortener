@@ -79,10 +79,10 @@ function CreateLink() {
 
         }
 
-        catch {
-
-            toast.error("Unable to create link");
-
+        catch (error) {
+            toast.error(
+                error.response?.data?.error|| "Unable to create link"
+            );
         }
 
         finally {
