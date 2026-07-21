@@ -21,9 +21,9 @@ A full-stack URL Shortener and Analytics Platform built with **React**, **Django
 
 ![Dashboard](screenshots/dashboard.png)
 
-### My Links
+### My-Links
 
-![My Links](screenshots/mylinks.png)
+![My Links](screenshots/my-links.png)
 
 ### Analytics
 
@@ -33,7 +33,7 @@ A full-stack URL Shortener and Analytics Platform built with **React**, **Django
 
 ### Create Link
 
-![Create Link](screenshots/create-link.png)
+![Create Link](screenshots/createlink.png)
 
 ---
 
