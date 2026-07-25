@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Sparkles, ArrowRight, QrCode } from "lucide-react";
 
 import { registerUser } from "../../services/authService";
+import { toast } from "react-toastify";
 
 function Register() {
 
@@ -39,9 +40,31 @@ function Register() {
         }
 
         catch (error) {
+            console.log(error.response?.data);
 
-            console.log(error.response);
+            const data = error.response?.data;
 
+            let message = "Registration failed.";
+
+            if (data) {
+                if (data.detail) {
+                    message = data.detail;
+                } else if (data.error) {
+                    message = data.error;
+                } else if (data.message) {
+                    message = data.message;
+                } else {
+                    const firstKey = Object.keys(data)[0];
+
+                    if (firstKey) {
+                        message = Array.isArray(data[firstKey])
+                            ? data[firstKey][0]
+                            : data[firstKey];
+                    }
+                }
+            }
+
+            toast.error(message);
         }
 
     };
@@ -64,7 +87,7 @@ function Register() {
 
                     <div className="flex items-center gap-4 mb-8">
 
-                    <div className="bg-white/10 backdrop-blur-xl p-3 rounded-2xl">
+                        <div className="bg-white/10 backdrop-blur-xl p-3 rounded-2xl">
 
                             <img
                                 src="/logo.png"

@@ -9,7 +9,7 @@ function Navbar({ toggleSidebar }) {
 
     const [open, setOpen] = useState(false);
 
-    const initials =
+    const initials = 
         `${user?.first_name?.[0] || ""}${user?.last_name?.[0] || ""}` ||
         user?.username?.[0]?.toUpperCase() ||
         "U";
