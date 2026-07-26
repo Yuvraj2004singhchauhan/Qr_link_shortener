@@ -23,7 +23,7 @@ A full-stack URL Shortener and Analytics Platform built with **React**, **Django
 
 ### My-Links
 
-![My Links](screenshots/my-links.png)
+![My Links](screenshots/mylinks.png)
 
 ### Analytics
 
