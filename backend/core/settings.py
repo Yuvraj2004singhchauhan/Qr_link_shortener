@@ -51,7 +51,7 @@ MIDDLEWARE = [
 ]
 
 ALLOWED_HOSTS = [
-    "https://qr-link-shortener.onrender.com",
+    "qr-link-shortener.onrender.com",
     "127.0.0.1",
     "localhost",
 ]
