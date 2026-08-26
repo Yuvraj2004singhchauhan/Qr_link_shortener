@@ -7,5 +7,5 @@ urlpatterns = [
     path("delete/<int:id>/", DeleteLinkView.as_view()),
     path("update/<int:id>/",UpdateLinkView.as_view()),
     path("dashboard-analytics/",DashboardAnalyticsView.as_view(),),
-    path("health/",healthView.as_view()),
+    path("health/",healthView),
 ]
