@@ -6,6 +6,7 @@ from rest_framework.permissions import AllowAny
 from drf_spectacular.utils import extend_schema
 from django.db.models import Count
 from django.db.models.functions import TruncDate
+from django.http import JsonResponse
 
 
 import qrcode
@@ -315,3 +316,6 @@ class UpdateLinkView(APIView):
         return Response(
             ShortURLSerializer(updated_link).data
         )
+
+def healthView(request):
+    return JsonResponse({"status": "ok"})
