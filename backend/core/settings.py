@@ -51,7 +51,7 @@ MIDDLEWARE = [
 ]
 
 ALLOWED_HOSTS = [
-    "qrlinkshortener-production.up.railway.app",
+    "https://qr-link-shortener.onrender.com",
     "127.0.0.1",
     "localhost",
 ]
@@ -61,7 +61,7 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://qrlinkshortener-production.up.railway.app",
+    "https://qr-link-shortener.onrender.com",
     "https://qr-link-shortener-six.vercel.app",
     "http://localhost:5173",
 ]
