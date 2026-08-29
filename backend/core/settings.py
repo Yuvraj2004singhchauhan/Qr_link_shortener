@@ -58,11 +58,13 @@ ALLOWED_HOSTS = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "https://qr-link-shortener-six.vercel.app",
+    "https://keep-alive-six.vercel.app/",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://qr-link-shortener.onrender.com",
     "https://qr-link-shortener-six.vercel.app",
+    "https://keep-alive-six.vercel.app/",
     "http://localhost:5173",
 ]
 ROOT_URLCONF = 'core.urls'
